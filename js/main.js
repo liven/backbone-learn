@@ -26,11 +26,28 @@ var PeopleCollection = Backbone.Collection.extend({
       model: Person
 });
 
+// Вид списка людей
+var PeopleView = Backbone.View.extend({
+    tagName: 'ul',
+    initialize: function () {
+        // console.log(this);
+    },
+    render: function () {
+        // Пройтись по всему списку и срендерить PersonView
+        this.collection.each(function (person) {
+            var personView = new PersonView({model:person});
+            //Обратите внимание на цепной метод
+            this.$el.append(personView.render().el);
+        }, this);
+        return this;
+    }
+});
+
 // Вид представления одного человека
 var PersonView = Backbone.View.extend({
     // Работает как конструктор класса - вызывается при создании обьекта данного типа
     initialize: function () {
-       console.log(this.model);
+       // console.log(this.model);
     },
     tagName: 'li',
     template: '#person-id',
@@ -40,15 +57,10 @@ var PersonView = Backbone.View.extend({
         var model = this.model;
         var template = _.template($(this.template).html());
         this.$el.html(template(model.toJSON()));
+        // Возвращаем для цепного метода
+        return this;
     }
 });
-
-var person = new Person({name: 'Anna Putintseva'});
-var person2 = new Person({name: 'Vasya Mazepin'});
-
-// Прикрепляем модель к вьюхе
-var view = new PersonView({model:person});
-var view2 = new PersonView({model:person2});
 
 // Можно указать в конструкторе модели как обьекты моделей, так и атрибуты, они применятся к модели
 var peopleCollection = new PeopleCollection([
@@ -69,7 +81,8 @@ var peopleCollection = new PeopleCollection([
     }
 ]);
 
-//В консоли необходимо создать обьект Person и назначить невалидные данные:  person.set({'name': ''}, {validate:true})
-Person.prototype.on('invalid', function(model, error){
-    console.log(error);
+var peopleView = new PeopleView({collection: peopleCollection});
+//Не забудьте Document.ready!!
+$(function () {
+    $(document.body).append(peopleView.render().el);
 });
