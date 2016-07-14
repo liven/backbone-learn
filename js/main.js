@@ -26,18 +26,22 @@ var PersonView = Backbone.View.extend({
        console.log(this.model);
     },
     tagName: 'li',
-    template: _.template('<%= name %> (<%= age %>) - <%= job %>'),
+    template: '#person-id',
     className: 'person',
     id: 'some-person',
     render: function () {
         var model = this.model;
-        this.$el.html(this.template(model.toJSON()));
+        var template = _.template($(this.template).html());
+        this.$el.html(template(model.toJSON()));
     }
 });
 
 var person = new Person;
-// Прикрепляем моель к вьюхе
+var person2 = new Person({name: 'Vasya Mazepin'});
+
+// Прикрепляем модель к вьюхе
 var view = new PersonView({model:person});
+var view2 = new PersonView({model:person2});
 
 //В консоли необходимо создать обьект Person и назначить невалидные данные:  person.set({'name': ''}, {validate:true})
 Person.prototype.on('invalid', function(model, error){
