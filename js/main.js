@@ -20,6 +20,28 @@ var Person = Backbone.Model.extend({
     }
 });
 
+var PersonView = Backbone.View.extend({
+    // Работает как конструктор класса - вызывается при создании обьекта данного типа
+    initialize: function () {
+       console.log(this.model);
+    },
+    tagName: 'li',
+    className: 'person',
+    id: 'some-person',
+    render: function () {
+        var model = this.model;
+        //Антипаттерн, далее - шаблонизаторы
+        this.$el.html(model.get('name') +'(' + model.get('age') + ' - '+ model.get('job') + ' )');
+    }
+});
+
+var person = new Person;
+// Прикрепляем моель к вьюхе
+var view = new PersonView({model:person});
+
+
+
+
 //В консоли необходимо создать обьект Person и назначить невалидные данные:  person.set({'name': ''}, {validate:true})
 Person.prototype.on('invalid', function(model, error){
     console.log(error);
