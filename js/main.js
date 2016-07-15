@@ -1,23 +1,14 @@
+// Хелпер шаблона
+var template = function (id) {
+    return _.template($('#' + id).html());
+};
+
 //Модель человека
 var Person = Backbone.Model.extend({
     defaults: {
         name: 'Dima',
         age: 23,
         job: 'Developer'
-    },
-    validate: function (attrs) {
-
-        if (attrs.age <= 0) {
-            return 'Возраст должен быть больше 0'
-        }
-
-        if (!attrs.name) {
-            return 'Имя не должно быть пустым'
-        }
-
-    },
-    walk: function () {
-        return this.get('name') + ' is walking';
     }
 });
 //Список людей
@@ -50,13 +41,12 @@ var PersonView = Backbone.View.extend({
        // console.log(this.model);
     },
     tagName: 'li',
-    template: '#person-id',
+    template: template('person-id'),
     className: 'person',
     id: 'some-person',
     render: function () {
         var model = this.model;
-        var template = _.template($(this.template).html());
-        this.$el.html(template(model.toJSON()));
+        this.$el.html(this.template(model.toJSON()));
         // Возвращаем для цепного метода
         return this;
     }
