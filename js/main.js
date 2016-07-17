@@ -22,13 +22,17 @@
     });
     App.Views.Task = Backbone.View.extend({
         initialize: function(){
-            this.model.on('change', this.render, this)
+            this.model.on('change', this.render, this);
+            this.model.on('destroy', this.remove, this);
         },
         tagName: 'li',
         template: template('taskTemplate'),
         render: function () {
             this.$el.html(this.template(this.model.toJSON()));
             return this;
+        },
+        remove: function(){
+            this.$el.remove();
         },
         events:{
             'click .edit': 'editTask',
@@ -39,7 +43,7 @@
             this.model.set({title: newTaskTitle}, {validate:true});
         },
         deleteTask: function () {
-            alert('Вы удалили задачу');
+            this.model.destroy();
         }
     });
     App.Views.Tasks = Backbone.View.extend({
