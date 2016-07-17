@@ -9,78 +9,72 @@
     window.template = function (id) {
         return _.template($('#' + id).html());
     };
-    //Модель человека
-    App.Models.Person = Backbone.Model.extend({
-        defaults: {
-            name: 'Dima',
-            age: 23,
-            job: 'Developer'
+
+    App.Models.Task = Backbone.Model.extend({
+        validate: function (attrs) {
+            if (! $.trim(attrs.title)) {
+                return 'Имя задачи должно быть валидным'
+            }
         }
     });
-    //Список людей
-    App.Collections.People = Backbone.Collection.extend({
-         //Модель по умолчанию
-          model: App.Models.Person
+    App.Collections.Task = Backbone.Collection.extend({
+        model: App.Models.Task
     });
-
-    // Вид списка людей
-    App.Views.People = Backbone.View.extend({
-        tagName: 'ul',
-        initialize: function () {
-            // console.log(this);
-        },
-        render: function () {
-            // Пройтись по всему списку и срендерить PersonView
-            this.collection.each(function (person) {
-                var personView = new App.Views.Person({model:person});
-                //Обратите внимание на цепной метод
-                this.$el.append(personView.render().el);
-            }, this);
-            return this;
-        }
-    });
-
-    // Вид представления одного человека
-    App.Views.Person = Backbone.View.extend({
-        // Работает как конструктор класса - вызывается при создании обьекта данного типа
-        initialize: function () {
-           // console.log(this.model);
+    App.Views.Task = Backbone.View.extend({
+        initialize: function(){
+            this.model.on('change', this.render, this)
         },
         tagName: 'li',
-        template: template('person-id'),
-        className: 'person',
-        id: 'some-person',
+        template: template('taskTemplate'),
         render: function () {
-            var model = this.model;
-            this.$el.html(this.template(model.toJSON()));
-            // Возвращаем для цепного метода
+            this.$el.html(this.template(this.model.toJSON()));
             return this;
+        },
+        events:{
+            'click .edit': 'editTask',
+            'click .delete': 'deleteTask'
+        },
+        editTask: function () {
+            var newTaskTitle = prompt('Как переименуем задачу?', this.model.get('title'));
+            this.model.set({title: newTaskTitle}, {validate:true});
+        },
+        deleteTask: function () {
+            alert('Вы удалили задачу');
+        }
+    });
+    App.Views.Tasks = Backbone.View.extend({
+        tagName: 'ul',
+        render: function () {
+            this.collection.each(this.addOne, this);
+            return this;
+        },
+        addOne: function (task) {
+            // Создавать новый вид
+            var taskView = new App.Views.Task({model:task});
+            // Добавлять его в корневой элемент
+            this.$el.append(taskView.render().el)
         }
     });
 
-    // Можно указать в конструкторе модели как обьекты моделей, так и атрибуты, они применятся к модели
-    var peopleCollection = new App.Collections.People([
+
+    var tasksCollection = new App.Collections.Task([
         {
-            name: 'Иван',
-            age: 20,
-            job: 'Студент'
+            title: 'Сходить в магазин',
+            priority: 4
         },
         {
-            name: 'Василий',
-            age: 25,
-            job: 'Developer'
+            title: 'Получить почту',
+            priority: 3
         },
         {
-            name: 'Анна',
-            age: 23,
-            job: 'Developer'
+            title: 'Сходить на работу',
+            priority: 5
         }
     ]);
+    var tasksView = new App.Views.Tasks({collection: tasksCollection});
 
-    var peopleView = new App.Views.People({collection: peopleCollection});
-    //Не забудьте Document.ready!!
+
     $(function () {
-        $(document.body).append(peopleView.render().el);
-        console.log(App.Models)
+        $('div.tasks').html(tasksView.render().el);
     });
 }());

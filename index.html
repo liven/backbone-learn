@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/style.css">
-    <script type="text/template" id="person-id">
-        <%= name %> (<%= age %>) - <%= job %>
+    <script type="text/template" id="taskTemplate">
+        <span><%= title %></span>
+        <button class="edit">Edit</button>
+        <button class="delete">Delete</button>
     </script>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/underscore/underscore-min.js"></script>
@@ -13,6 +15,8 @@
     <title>Привет Мир</title>
 </head>
 <body>
+<h1>Список задач:</h1>
 
+<div class="tasks"></div>
 </body>
 </html>
