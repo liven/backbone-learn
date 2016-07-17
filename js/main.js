@@ -57,6 +57,22 @@
             var taskView = new App.Views.Task({model:task});
             // Добавлять его в корневой элемент
             this.$el.append(taskView.render().el)
+        },
+        initialize: function () {
+            this.collection.on('add', this.addOne, this);
+        }
+    });
+    App.Views.AddTask = Backbone.View.extend({
+        el: '#addTask',
+
+        events: {
+            'submit': 'submit'
+        },
+        submit: function (event) {
+            event.preventDefault();
+            var newTaskTitle = $(event.currentTarget).find('input[type=text]').val();
+            var task = new App.Models.Task({title:newTaskTitle});
+            this.collection.add(task);
         }
     });
 
@@ -77,8 +93,8 @@
     ]);
     var tasksView = new App.Views.Tasks({collection: tasksCollection});
 
-
     $(function () {
         $('div.tasks').html(tasksView.render().el);
+        var addTaskView = new App.Views.AddTask({collection: tasksCollection});
     });
 }());
