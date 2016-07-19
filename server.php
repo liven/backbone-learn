@@ -33,5 +33,20 @@ $app->put('/tasks/{id}',function(Request $request, $id) use($app) {
     file_put_contents($database, json_encode($tasks));
     return new Response('');
 });
+
+$app->delete('/tasks/{id}',function(Request $request, $id) use($app) {
+    $content = json_decode($request->getContent(),true);
+    $database = __DIR__.'/database/tasks.json';
+    $tasks = json_decode(file_get_contents($database), true);
+    $result = null;
+    foreach($tasks as $key => $task) {
+        if ($task['id'] == $id ) {
+            unset($tasks[$key]);
+        }
+    }
+    file_put_contents($database, json_encode($tasks));
+    return new Response('');
+});
+
 $app['debug'] = true;
 $app->run();
