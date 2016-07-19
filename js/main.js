@@ -9,7 +9,6 @@ $(function () {
     App.Models.Task = Backbone.Model.extend({
         defaults: {
             title: '',
-            id: '',
             completed: false
         },
         urlRoot: function(){
