@@ -5,30 +5,31 @@
         Collections: {},
         Router: {}
     };
+    var vent = _.extend({}, Backbone.Events);
 
+    App.Views.SpecialTask = Backbone.View.extend({
+        initialize: function () {
+            vent.on('specialTasks:show', this.show, this)
+        },
+        show: function(id){
+            console.log('Выводим задачу с id = ' + id);
+        }
+    });
     // Хелпер шаблона
     window.template = function (id) {
         return _.template($('#' + id).html());
     };
     App.Router = Backbone.Router.extend({
         routes: {
-            ''                : 'index',
-            'page/:id/*simbo' : 'page',
-            'search/:query'   : 'search',
-            '*other'          : 'default'
+            '': 'index',
+            'specialTask/:id': 'showSpecialTasks'
+
         },
         index: function () {
             console.log('Всем привет от индексного роута');
         },
-        page: function (id, simbo) {
-            console.log('Это роут page ' + id + ' !!!!!');
-            console.log(simbo);
-        },
-        search: function (query) {
-
-        },
-        default: function (other) {
-            alert('Страница не найдена');
+        showSpecialTasks: function(id){
+            vent.trigger('specialTasks:show', id);
         }
 
     });
@@ -118,7 +119,7 @@
     $(function () {
         $('div.tasks').html(tasksView.render().el);
         var addTaskView = new App.Views.AddTask({collection: tasksCollection});
-
+        new App.Views.SpecialTask;
         new App.Router;
         Backbone.history.start(); //Чтобы Backbone отслеживал историю
     });
