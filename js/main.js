@@ -2,14 +2,26 @@
     window.App = {
         Models: {},
         Views: {},
-        Collections: {}
+        Collections: {},
+        Router: {}
     };
 
     // Хелпер шаблона
     window.template = function (id) {
         return _.template($('#' + id).html());
     };
-
+    App.Router = Backbone.Router.extend({
+        routes: {
+            '': 'index',
+            'read': 'read'
+        },
+        index: function () {
+            console.log('Всем привет от индексного роута');
+        },
+        read: function () {
+            console.log('Это роут Read');
+        }
+    });
     App.Models.Task = Backbone.Model.extend({
         validate: function (attrs) {
             if (! $.trim(attrs.title)) {
@@ -96,5 +108,8 @@
     $(function () {
         $('div.tasks').html(tasksView.render().el);
         var addTaskView = new App.Views.AddTask({collection: tasksCollection});
+
+        new App.Router;
+        Backbone.history.start(); //Чтобы Backbone отслеживал историю
     });
 }());
