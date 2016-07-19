@@ -12,15 +12,25 @@
     };
     App.Router = Backbone.Router.extend({
         routes: {
-            '': 'index',
-            'read': 'read'
+            ''                : 'index',
+            'page/:id/*simbo' : 'page',
+            'search/:query'   : 'search',
+            '*other'          : 'default'
         },
         index: function () {
             console.log('Всем привет от индексного роута');
         },
-        read: function () {
-            console.log('Это роут Read');
+        page: function (id, simbo) {
+            console.log('Это роут page ' + id + ' !!!!!');
+            console.log(simbo);
+        },
+        search: function (query) {
+
+        },
+        default: function (other) {
+            alert('Страница не найдена');
         }
+
     });
     App.Models.Task = Backbone.Model.extend({
         validate: function (attrs) {
