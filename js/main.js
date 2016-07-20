@@ -1,4 +1,4 @@
-$(function () {
+(function () {
     window.App = {
         Models: {},
         Views: {},
@@ -6,4 +6,4 @@ $(function () {
         Router: {}
     };
     window.vent = _.extend({}, Backbone.Events);
-});
+}());

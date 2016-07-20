@@ -1,3 +1,5 @@
-/**
- * Created by vasily on 20.07.16.
- */
+App.Views.App = Backbone.View.extend({
+    initialize: function () {
+        console.log(this.collection.toJSON());
+    }
+});

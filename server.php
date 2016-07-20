@@ -9,13 +9,13 @@ $app = new Silex\Application();
 $app['database'] = __DIR__.'/database/contacts.json';
 
 $app->get('/contacts', function() use($app) {
-    $tasks = json_decode(file_get_contents(__DIR__ . '/database/tasks.json'), true);
+    $tasks = json_decode(file_get_contents($app['database']), true);
     return json_encode($tasks);
 });
 
 
 $app->get('/contacts/{id}', function($id) use($app) {
-    $tasks = json_decode(file_get_contents(__DIR__ . '/database/tasks.json'), true);
+    $tasks = json_decode(file_get_contents($app['database']), true);
     $result = null;
     foreach($tasks as $task) {
         if ($task['id'] == $id ) {

@@ -1,3 +1,3 @@
-/**
- * Created by vasily on 20.07.16.
- */
+App.Models.Contact = Backbone.Model.extend({
+
+});

@@ -1,3 +1,8 @@
-/**
- * Created by vasily on 20.07.16.
- */
+App.Router = Backbone.Router.extend({
+    routes: {
+        '': 'index'
+    },
+    index: function(){
+        console.log('Индекс')
+    }
+});

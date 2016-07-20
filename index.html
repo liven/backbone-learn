@@ -5,17 +5,26 @@
 
     <link rel="stylesheet" href="css/style.css">
 
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="bower_components/underscore/underscore-min.js"></script>
-    <script src="bower_components/backbone/backbone-min.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/models.js"></script>
-    <script src="js/collections.js"></script>
-    <script src="js/views.js"></script>
-    <script src="js/router.js"></script>
+
     <title>Привет Мир</title>
 </head>
 <body>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/underscore/underscore-min.js"></script>
+<script src="bower_components/backbone/backbone-min.js"></script>
+<script src="js/main.js"></script>
+<script src="js/models.js"></script>
+<script src="js/router.js"></script>
+<script src="js/collections.js"></script>
+<script src="js/views.js"></script>
+<script>
+    new App.Router();
+    Backbone.history.start();
+    App.contacts = new App.Collections.Contacts();
+    App.contacts.fetch().then(function () {
+        new App.Views.App({collection: App.contacts})
+    })
+</script>
 <h1>Привет Мир</h1>
 
 </body>
