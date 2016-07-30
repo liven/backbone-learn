@@ -2,18 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
+    <script id="single-contact" type="text/x-handlebars-template">
+        <td>{{ first_name }}</td>
+        <td>{{ last_name }}</td>
+        <td>{{ email }}</td>
+        <td>{{ description }}</td>
+    </script>
     <link rel="stylesheet" href="css/style.css">
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/underscore/underscore-min.js"></script>
     <script src="bower_components/backbone/backbone-min.js"></script>
+    <script src="bower_components/handlebars/handlebars.min.js"></script>
     <script src="js/main.js"></script>
     <script src="js/models.js"></script>
     <script src="js/router.js"></script>
     <script src="js/collections.js"></script>
     <script src="js/views.js"></script>
-
-
+    <style>
+        #contact-form {margin-bottom: 20px;}
+    </style>
     <title>Менеджер контактов</title>
 </head>
 <body>
@@ -39,6 +46,16 @@
         <input type="submit" value="Добавить контакт">
     </div>
 </form>
+<table id="all-contacts-table">
+   <thead>
+   <tr>
+       <td><strong>Имя</strong></td>
+       <td><strong>Фамилия</strong></td>
+       <td><strong>Email</strong></td>
+       <td><strong>Описание</strong></td>
+   </tr>
+   </thead>
+</table>
 <script>
     $(function () {
         new App.Router();
