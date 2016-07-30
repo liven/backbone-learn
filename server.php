@@ -15,11 +15,11 @@ $app->get('/contacts', function() use($app) {
 
 
 $app->get('/contacts/{id}', function($id) use($app) {
-    $tasks = json_decode(file_get_contents($app['database']), true);
+    $contacts = json_decode(file_get_contents($app['database']), true);
     $result = null;
-    foreach($tasks as $task) {
-        if ($task['id'] == $id ) {
-            $result = $task;
+    foreach($contacts as $contact) {
+        if ($contact['id'] == $id ) {
+            $result = $contact;
         }
     }
     return json_encode($result);
@@ -27,42 +27,42 @@ $app->get('/contacts/{id}', function($id) use($app) {
 
 $app->put('/contacts/{id}',function(Request $request, $id) use($app) {
     $content = json_decode($request->getContent(),true);
-    $tasks = json_decode(file_get_contents($app['database']), true);
+    $contacts = json_decode(file_get_contents($app['database']), true);
     $result = null;
-    foreach($tasks as $key => $task) {
-        if ($task['id'] == $id ) {
-            $newTask = array_merge($task, $content);
-            $tasks[$key] = $newTask;
+    foreach($contacts as $key => $contact) {
+        if ($contact['id'] == $id ) {
+            $newTask = array_merge($contact, $content);
+            $contacts[$key] = $newTask;
         }
     }
-    file_put_contents($app['database'], json_encode($tasks));
+    file_put_contents($app['database'], json_encode($contacts));
     return new Response('');
 });
 
 $app->delete('/contacts/{id}',function($id) use($app) {
-    $tasks = json_decode(file_get_contents($app['database']), true);
+    $contacts = json_decode(file_get_contents($app['database']), true);
     $result = null;
-    foreach($tasks as $key => $task) {
-        if ($task['id'] == $id ) {
-            unset($tasks[$key]);
+    foreach($contacts as $key => $contact) {
+        if ($contact['id'] == $id ) {
+            unset($contacts[$key]);
         }
     }
-    file_put_contents($app['database'], json_encode($tasks));
+    file_put_contents($app['database'], json_encode($contacts));
     return new Response('');
 });
 
 $app->post('/contacts',function(Request $request) use($app) {
     $content = json_decode($request->getContent(),true);
-    $tasks = json_decode(file_get_contents($app['database']), true);
+    $contacts = json_decode(file_get_contents($app['database']), true);
     $id = 0;
-    foreach($tasks as $task) {
-        if ($task['id'] > $id ) {
-            $id = $task['id'];
+    foreach($contacts as $contact) {
+        if ($contact['id'] > $id ) {
+            $id = $contact['id'];
         }
     }
     $content['id'] = $id + 1;
-    $tasks[] = $content;
-    file_put_contents($app['database'], json_encode($tasks));
+    $contacts[] = $content;
+    file_put_contents($app['database'], json_encode($contacts));
     return new Response(json_encode($content));
 });
 
